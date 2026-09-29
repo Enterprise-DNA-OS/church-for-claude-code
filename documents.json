@@ -1,11 +1,66 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "service-run-sheet",
+    "title": "Service run sheet",
+    "for_each": "select id,name from services where status='planned'",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Service",
+        "sql": "select name,service_date,location from services where id=$1"
+      },
+      {
+        "title": "Order",
+        "sql": "select position,title,minutes from service_items where service_id=$1 order by position"
+      },
+      {
+        "title": "Roster",
+        "sql": "select role,person,response,finding from v_roster_review where id in(select id from rosters where service_id=$1) order by role",
+        "note": "Internal draft. Resolve findings before confirming assignments."
+      }
+    ]
+  },
+  {
+    "name": "giving-statement",
+    "title": "Giving statement draft",
+    "for_each": "select distinct p.id,p.name from people p join giving g on g.person_id=p.id",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Recorded contributions",
+        "sql": "select g.donated_on,f.name fund,f.currency,g.amount_cents,g.reference from giving g join funds f on f.id=g.fund_id where g.person_id=$1 order by g.donated_on",
+        "note": "Reconcile to bank records. This is not an issued tax receipt."
+      },
+      {
+        "title": "Totals by currency",
+        "sql": "select f.currency,sum(g.amount_cents)::bigint amount_cents from giving g join funds f on f.id=g.fund_id where g.person_id=$1 group by f.currency"
+      }
+    ]
+  },
+  {
+    "name": "donation-receipt",
+    "title": "Donation receipt draft",
+    "for_each": "select id,donor as name from v_giving",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Gift details",
+        "sql": "select donor,donated_on,currency,amount_cents,fund,organisation_name,tax_number,charity_number,receipt_review_ready from v_giving where id=$1",
+        "note": "DRAFT ONLY. A false review status means eligibility evidence is missing. The coordinator must verify donee or DGR status and whether this is a qualifying gift. Add official letterhead, an issue number, and an authorised name, designation and actual signature before issuing a New Zealand receipt. Record a copy or replacement label where applicable. Australian DGR gift receipts must identify the recipient fund, its ABN if any, and state that the contribution is a gift. No signature or eligibility is invented."
+      }
+    ]
+  },
+  {
+    "name": "safeguarding-review",
+    "title": "Safeguarding record review",
+    "for_each": "select distinct p.id,p.name from people p join checks c on c.person_id=p.id",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Recorded evidence",
+        "sql": "select jurisdiction,checked_on,expires_on,outcome,verified_by,evidence from checks where person_id=$1 order by checked_on desc",
+        "note": "Restricted internal evidence. Not a government verification or permission to work with children."
+      }
     ]
   }
 ]

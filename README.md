@@ -1,115 +1,94 @@
-<h1 align="center">Church for Claude Code</h1>
+# Church for Claude Code
 
-<p align="center">
-  <strong>The open-source church management system that is just a database and Claude Code.</strong>
-</p>
+The church office desk for Sunday rosters, people who need a follow-up, home groups, safeguarding evidence and giving records. Your records in a database you own. MIT licence. Built by Enterprise DNA.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+| --- | --- | --- |
+| Free source. Follow the quick start. | Your church's fields, roles, paperwork, Elvanto export mapping and volunteer screens. | Installed and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Elvanto data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=elvanto">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/elvanto?utm_source=github&utm_medium=readme&utm_campaign=elvanto">How it works</a></td>
-  </tr>
-</table>
+[Talk to Sam](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=elvanto&utm_medium=readme) · [Instead of Elvanto](https://enterprisedna.co/omni/instead-of/elvanto?utm_source=github&utm_medium=readme&utm_campaign=elvanto)
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-elvanto">Instead of Elvanto</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Church for Claude Code does the job you pay Elvanto for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Elvanto dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Elvanto per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=elvanto).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+Runs with Claude Code, Codex, OpenCode or Cursor. Read AGENTS.md and CLAUDE.md. The database is the product and the coding agent is the door.
 
 ## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/church-for-claude-code.git
 cd church-for-claude-code
 npm install
 npm run demo
+npm run church -- weekly-review
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Node 20 or newer. PGlite runs on your machine with no database service. Set DATABASE_URL for Postgres with the same migrations. DATA_DIR chooses local storage. OUTPUT_DIR chooses where drafts, documents and views go. The fictional seed is idempotent and includes overdue care, stale attendance, an expired check, roster gaps and two currencies. Start real records in an empty database with npm run migrate, never demo.
 
-### Use it with your own Postgres or Supabase
+Elvanto is inexpensive for small churches and its published price includes all features. This project is for ownership and an office process you can change, not a guaranteed saving. Free source still needs hosting, agent subscriptions, backups and maintenance. Compare the actual operating costs before switching.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+## The church office week
 
-## The commands
+- `/sunday-roster`, `/roster-gaps` and `/service-plan` prepare the weekend. Record roles, assignments, responses and the order of service.
+- `/care-due`, `/missing-people` and `/newcomers` identify people for an authorised follow-up. Missing attendance means missing records, not confirmed absence.
+- `/groups`, `/volunteer-load` and `/same-day-rosters` show home group capacity and volunteer workload.
+- `/giving`, `/giving-months` and `/receipt-review` reconcile contributions by fund and currency. Nothing processes a payment.
+- `/compliance` checks recorded safeguarding and gift evidence. `/weekly-review` combines the roster, care, findings and giving.
+- `/draft-welcome` and `/draft-roster` save drafts for a person to review. Nothing sends. Welcome drafts require an adult with recorded contact permission.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+The 31 commands live in .claude/commands. `npm run church -- help --json` lists every read, write and field. Reads have aligned text and --json. `add`, `update` and `log` accept actual operator facts. Relationships accept case-insensitive names, full IDs and ID prefixes. Ambiguity lists matches and exits 1. Money uses integer cents and separate currency totals. There is no deletion route.
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Checks and evidence
 
-## Instead of elvanto
+Roster review uses the latest recorded check for the role's jurisdiction and flags a barred, pending, absent or expired result. A clearance must cover the service date. For an assessed NZ-ACT role the CLI limits renewal to three years. AU-NSW requires actual employer verification evidence and the regulator's expiry. Ordinary NZ church volunteers are not automatically covered by the Children's Act rule. POLICY supports the church's own assessed requirements.
 
-<!-- TODO(author): how to bring data across from Elvanto; link docs/replace-elvanto.md -->
+Read [the sourced rules](docs/compliance.md). These are record checks, not a live regulator search or a safeguarding certification. The coordinator decides applicability and retains original evidence. Checks, giving and notes are append-only through the CLI. Reviewed corrections preserve originals. Audit history records inserts and changes but is not tamper proof.
 
-## Architecture
+## Paperwork and views
 
-```
-church-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
+Set business name, logo and colours in brand.json. `npm run docs` renders service run sheets, giving statements, donation receipt drafts and safeguarding review sheets. `npm run view` renders the office week, safeguarding review and giving dashboards. The outputs are read-only HTML for review and printing.
 
-## Built for coding agents
+Receipt drafts are not signed or issued. Funds default to unverified tax eligibility. A responsible person reconciles gifts, confirms donee or DGR status, applies official letterhead, adds issue references and a real authorised signature where required, then retains the issued document. Missing eligibility appears in compliance. Do not claim a church's general giving is automatically tax deductible.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+[Why no front end](docs/why-no-front-end.md) explains the office scope and what phone capture, child check-in and volunteer self-service need. Retain the existing collection workflow until a replacement has been tested.
 
-## Contributing
+## Ten questions across the church records
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+Elvanto has reports of its own. These are questions this free version answers today, not a claim that Elvanto cannot answer them.
 
-## Want it installed and run for you?
+1. Which Sunday roles are empty, declined or still awaiting a response? (`roster-gaps`)
+2. Which assigned children's workers have a check that needs review? (`compliance`)
+3. Who has more than one assignment on the same date? (`same-day-rosters`)
+4. Which volunteers carry the most assignments over the next four weeks? (`volunteer-load`)
+5. Which adults have no recorded attendance in four weeks, and how many overdue tasks do they have? (`missing-people`)
+6. Which newcomers have no home group yet? (`newcomers`)
+7. Which care tasks are due and who is responsible? (`care-due`)
+8. Which home groups have space and who leads them? (`groups`)
+9. How much giving is recorded by fund and currency? (`giving`)
+10. Which gifts still lack the evidence needed to review a donation receipt? (`receipt-review`)
 
-Enterprise DNA installs Church for Claude Code for your business, migrates your Elvanto data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+## Your first hour: ten things to ask for
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=elvanto)
-- Read more: [enterprisedna.co/omni/instead-of/elvanto](https://enterprisedna.co/omni/instead-of/elvanto?utm_source=github&utm_medium=readme&utm_campaign=elvanto)
+1. Put our church name and logo on the run sheet.
+2. Add our households without guessing family links.
+3. Add our home groups and capacity limits.
+4. Set up next Sunday's order of service.
+5. Record the volunteers' actual responses.
+6. Add the safeguarding policy our coordinator has approved.
+7. Set our attendance follow-up window.
+8. Map our Elvanto people export headings.
+9. Add our funds and their verified eligibility evidence.
+10. Print the Monday office review in our colours.
 
-## License
+/customise adds a field or changes a rule with a migration and tests. /new-view adds a read-only report. Back up real data before applying a migration.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+## Bring your history
+
+Follow [the Elvanto replacement guide](docs/replace-elvanto.md). A Standard Report people CSV with Member ID imports in one command, with an optional column mapping. Preview rolls back; exact repeat rows skip; changed source records fail for review; invalid batches roll back in full. Raw source columns are retained. Contact permission is never assumed. Review child classification and status before use.
+
+Giving, relationships, attendance history and attachments need separate reviewed mappings. The people import does not claim those have moved. Export writes all business records, raw imports and audit history as JSON and CSV. Use actual database backups for recovery.
+
+## Verification and operations
+
+npm test uses a temporary isolated database. It exercises every report, writes, latest-check precedence, blocked drafts, input validation, atomic and repeated imports, column mapping, audit history, exports, HTML escaping, documents and views. CI runs PGlite on Windows and Linux and the same tests on a disposable Postgres database. Local success does not prove CI has run.
+
+One church per database. This is an authorised office tool without member-level permissions or tenant isolation. Anyone with database access can read its records. Before shared use configure least privilege, encrypted devices and backups, restore tests, retention rules and controlled attachment storage. Keep sensitive pastoral details out of routine notes and restrict access to giving and children records.

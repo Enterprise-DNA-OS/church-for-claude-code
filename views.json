@@ -1,13 +1,45 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Church for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Church office week",
+    "subtitle": "Internal planning. Recorded evidence only.",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Sunday roster",
+        "sql": "select service,service_date,role,person,response,finding from v_roster_review order by service_date,service,role"
+      },
+      {
+        "title": "Care due",
+        "sql": "select t.id,p.name person,t.title,t.due_on,o.name owner,p.contact_allowed from care_tasks t join people p on p.id=t.person_id left join people o on o.id=t.owner_id where t.status='open' and t.due_on<=current_date order by t.due_on,p.name"
+      },
+      {
+        "title": "People absent from recorded gatherings",
+        "sql": "select name,last_attended,group_count,overdue_tasks,contact_allowed from v_people_attention where not is_child and joined_on<current_date-28 and (last_attended is null or last_attended<current_date-28) order by name"
+      }
+    ]
+  },
+  {
+    "name": "safeguarding",
+    "title": "Safeguarding record review",
+    "sections": [
+      {
+        "title": "Findings",
+        "sql": "select 'roster safeguard' rule,person,service_date due_on,finding from v_roster_review where safeguarding_required and finding<>'ready on recorded evidence'\n union all select 'check renewal',p.name,c.expires_on,case when c.outcome<>'cleared' then c.outcome else 'expires before review horizon' end from checks c join people p on p.id=c.person_id where c.checked_on<=current_date and (c.outcome<>'cleared' or c.expires_on<=current_date+30) and not exists(select 1 from checks n where n.person_id=c.person_id and n.jurisdiction=c.jurisdiction and n.checked_on<=current_date and (n.checked_on,n.created_at,n.id)>(c.checked_on,c.created_at,c.id))\n union all select 'receipt evidence',donor,donated_on,'tax eligibility or gift evidence missing' from v_giving where not receipt_review_ready order by rule,person",
+        "note": "A record check is not a clearance. Confirm the applicable law and original evidence."
+      }
+    ]
+  },
+  {
+    "name": "giving",
+    "title": "Giving reconciliation",
+    "sections": [
+      {
+        "title": "Funds and currencies",
+        "sql": "select fund,currency,count(*) gifts,sum(amount_cents)::bigint amount_cents from v_giving group by fund,currency order by currency,fund"
+      },
+      {
+        "title": "Receipt review",
+        "sql": "select donor,fund,donated_on,currency,amount_cents,case when receipt_review_ready then 'review draft and sign' else 'eligibility or gift evidence missing' end finding from v_giving order by donor,donated_on"
       }
     ]
   }

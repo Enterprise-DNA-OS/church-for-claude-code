@@ -1,24 +1,11 @@
-# Why there is no front end
+# Why this starts at the church office desk
 
-Elvanto is a database with a subscription. The tables underneath it are ordinary: a few entities, a few relationships, a handful of workflows you repeat every week. What you pay for is the layer on top that lets people who do not write SQL get at those tables. Screens, filters, dashboards, forms.
+People, groups, services, rosters and giving records fit in a database. A coding agent can ask questions across those records and run the office's recurring jobs. Read-only HTML reports give the coordinator a printable Sunday plan, safeguarding review and giving statement without a web application.
 
-That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, describe what you want, and it writes the query, runs it, and explains the answer. Ask a question the dashboard never had a chart for and you still get an answer.
+Elvanto also supplies useful screens and collection workflows. This base does not include mobile self-service, offline attendance capture, child check-in labels, drag-and-drop service planning, volunteer acceptance links, song licensing, an online giving gateway or SMS delivery. It records an operator's updates after the church's existing collection process. Do not promise members that it replaces a phone app.
 
-## What you gain
+A small authorised office can use it directly. A wider volunteer team needs a scoped portal and access controls before sharing church records. Enterprise DNA can build those screens and connections into a customised version after the workflows and access rules are agreed.
 
-- **Better answers.** A dashboard shows what the vendor decided to chart. Here you ask your own question, in your own words, and get it answered against your own data.
-- **No seats.** Everyone who needs to look can look. The bill does not grow with headcount.
-- **Your data in your Postgres.** Plain tables. Back them up, query them from anything, leave any time. There is no export step because there is nothing to leave.
-- **A process that matches you.** When your way of working changes, you add a command. You do not wait for a feature request to clear.
+The source is free. Hosting, coding agent subscriptions, backups and operational support still have costs. Compare the whole operating arrangement with the actual Elvanto bill.
 
-## What you give up
-
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
-- **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
-
-## Who this fits
-
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep Elvanto. If you need the answers more than the screens, this is cheaper, faster and yours.
-
-Installed and run for you: https://enterprisedna.co/omni/instead-of/elvanto
+Omni by Enterprise DNA installs, customises and operates the agreed system: https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=elvanto&utm_medium=readme
